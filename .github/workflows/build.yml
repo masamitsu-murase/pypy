@@ -1,0 +1,31 @@
+name: build
+
+on:
+  push:
+    branches: [ '*' ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        platform:
+        # exe is build for x64
+        # - python: x86
+        #   wheel: win32
+        - python: x64
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - run: "apt-get install -y build-essential gcc libbz2-dev libexpat1-dev libffi-dev libgc-dev libgdbm-dev liblzma-dev libncurses5-dev libncursesw5-dev libsqlite3-dev libssl-dev pkg-config pypy-dev python python-cffi python-dev python-pip python-virtualenv tk-dev zlib1g-de"
+
+    - run: "pypy ../../rpython/bin/rpython --opt=jit"
+      working-directory: "pypy/goal"
+
+    - run: "make lldebug"
+      working-directory: "pypy/goal"
+
+    - run: "PYTHONPATH=../.. ./pypy-c ../../lib_pypy/pypy_tools/build_cffi_imports.py"
+      working-directory: "pypy/goal"
