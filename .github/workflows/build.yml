@@ -24,7 +24,7 @@ jobs:
     - run: "pypy ../../rpython/bin/rpython --opt=jit"
       working-directory: "pypy/goal"
 
-    - run: "make lldebug"
+    - run: 'PYTHONPATH=../.. ./pypy -c "import sys; print(sys.version)"'
       working-directory: "pypy/goal"
 
     - run: "PYTHONPATH=../.. ./pypy-c ../../lib_pypy/pypy_tools/build_cffi_imports.py"
