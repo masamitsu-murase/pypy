@@ -19,12 +19,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - run: "sudo apt-get install -y build-essential gcc libbz2-dev libexpat1-dev libffi-dev libgc-dev libgdbm-dev liblzma-dev libncurses5-dev libncursesw5-dev libsqlite3-dev libssl-dev pkg-config pypy-dev tk-dev"
+    - run: "sudo apt-get install gcc make libffi-dev pkg-config zlib1g-dev libbz2-dev libsqlite3-dev libncurses5-dev libexpat1-dev libssl-dev libgdbm-dev tk-dev libgc-dev python-cffi liblzma-dev libncursesw5-dev"
 
-    - run: "pypy ../../rpython/bin/rpython --opt=jit"
-      working-directory: "pypy/goal"
+    - run: "make"
 
     - run: 'find . -iname pypy -print'
-
-    - run: "PYTHONPATH=../.. ./pypy-c ../../lib_pypy/pypy_tools/build_cffi_imports.py"
-      working-directory: "pypy/goal"
